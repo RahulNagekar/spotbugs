@@ -52,11 +52,16 @@ import java.util.jar.Manifest;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLInputFactory;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 import edu.umd.cs.findbugs.ba.SourceFinder;
 import edu.umd.cs.findbugs.ba.URLClassPath;
@@ -680,7 +685,7 @@ public class Project implements XMLWriteable, AutoCloseable {
         isModified = false;
     }
 
-    public static Project readXML(File f) throws IOException, SAXException {
+    public static Project readXML(File f) throws IOException, SAXException, ParserConfigurationException {
         @SuppressWarnings("resource") // will be closed by caller
         Project project = new Project();
 
@@ -696,7 +701,14 @@ public class Project implements XMLWriteable, AutoCloseable {
                 throw new IOException("Can't load a project from a " + tag + " file");
             }
 
-            XMLReader xr = XMLReaderFactory.createXMLReader();
+            SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+            parserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+            parserFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl",  Boolean.TRUE);
+            parserFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",  Boolean.FALSE);
+            parserFactory.setFeature("http://xml.org/sax/features/external-general-entities", Boolean.FALSE);
+            parserFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", Boolean.FALSE);
+            SAXParser parser = parserFactory.newSAXParser();
+            XMLReader xr = parser.getXMLReader();
 
             xr.setContentHandler(handler);
             xr.setErrorHandler(handler);
@@ -704,7 +716,7 @@ public class Project implements XMLWriteable, AutoCloseable {
             try (Reader reader = Util.getReader(in)) {
                 xr.parse(new InputSource(reader));
             }
-        } catch (IOException | SAXException e) {
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             project.close();
             throw e;
         }
@@ -741,9 +753,8 @@ public class Project implements XMLWriteable, AutoCloseable {
         if (projectFileName.endsWith(".xml") || projectFileName.endsWith(".fbp")) {
             try {
                 return Project.readXML(projectFile);
-            } catch (SAXException e) {
-                IOException ioe = new IOException("Couldn't read saved FindBugs project");
-                ioe.initCause(e);
+            } catch (SAXException | ParserConfigurationException e) {
+                IOException ioe = new IOException("Couldn't read saved FindBugs project",e);
                 throw ioe;
             }
         }
