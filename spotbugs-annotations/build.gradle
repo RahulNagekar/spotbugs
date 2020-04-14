@@ -7,7 +7,7 @@ apply from: "$rootDir/gradle/javadoc.gradle"
 apply from: "$rootDir/gradle/maven.gradle"
 
 dependencies {
-  compile 'com.google.code.findbugs:jsr305:3.0.2'
+  api 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 def manifestSpec = manifest {
@@ -63,18 +63,12 @@ task sourcesJar(type: Jar) {
   from sourceSets.main.allSource
 }
 
-artifacts {
-  archives jar, javadocJar, sourcesJar
-}
-
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      pom.project {
-        name 'SpotBugs Annotations'
-        description 'Annotations the SpotBugs tool supports'
-      }
-    }
+publishing.publications.maven {
+  artifact javadocJar
+  artifact sourcesJar
+  pom {
+    name = 'SpotBugs Annotations'
+    description = 'Annotations the SpotBugs tool supports'
   }
 }
 

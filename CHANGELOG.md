@@ -4,8 +4,160 @@ This is the changelog for SpotBugs. This follows [Keep a Changelog v1.0.0](http:
 
 Currently the versioning policy of this project follows [Semantic Versioning v2.0.0](http://semver.org/spec/v2.0.0.html).
 
-## Unreleased - 2018-??-??
+## Unreleased - 2020-??-??
+
+### Fixed
+
+* GUI was using older version of jdom2 compared to spotbugs in general, bumped it to match at 2.1.1
+* Numerous places in manifest, jnlp files, and sample analysis xml were indicating older asm that was already upgraded to 7.3.1, fixed
+* Added commons-text 1.8 which treats &#955; properly in xml as it is allowed as λ.  Associated test was corrected to use proper junit and &#955; was changed to λ.  The escape only was applicable to html.  Commons-lang original treatment was incorrect.
+* Resolved fatal exception in html report if BugInstance contains multiple Class elements ([#1025](https://github.com/spotbugs/spotbugs/issues/1025))
+
+### Changed
+
+* Upgraded junit4 to 4.13
+* Upgraded ant to 1.10.7
+* Upgraded log4j2 to 2.13.1
+* Upgraded from commons-lang2 to commons-lang3 3.10
+* Added commons-text 1.8 due to items deprecated in commons-lang3 and moved to this project
+
+## 4.0.1 - 2020-03-19
+
+### Fixed
+
+* Resolved Saxon warning ([#1077](https://github.com/spotbugs/spotbugs/issues/1077))
+* Unclear message of `SE_NO_SUITABLE_CONSTRUCTOR_FOR_EXTERNALIZATION` ([#1091](https://github.com/spotbugs/spotbugs/pull/1091))
+
+## 4.0.0 - 2020-02-15
+
+### Fixed
+
+* [Duplicated word in bug descriptions](https://github.com/spotbugs/spotbugs/commit/0d50f0056d7b34e09b472079120bf5ea2abddc45)
+
+## 4.0.0-RC3 - 2020-02-04
+
+This version contains no change, except for the solution for [a deployment problem](https://issues.sonatype.org/browse/MVNCENTRAL-5548).
+
+## 4.0.0-RC2 - 2020-01-29
+
+### Fixed
+
+* Latest 4.0.0 Eclipse plugin is not functional ([#1067](https://github.com/spotbugs/spotbugs/issues/1067))
+
+## 4.0.0-RC1 - 2020-01-17
+
+### Changed
+
+* change the dependency on `jaxen` to `runtime` scope
+* change the dependency on `saxon` to `runtime` scope
+
+## 4.0.0-beta5 - 2020-01-14
+
+### Fixed
+
+* Suppress `Error resolving Real SourcePath (only relative source path will be available)` warning. [#1009](https://github.com/spotbugs/spotbugs/issues/1009)
+
+### Changed
+
+* Bump up Apache Commons BCEL to the version 6.4.1
+* update ASM to 7.3.1 that supports Java 14 and 15
+
+## 4.0.0-beta4 - 2019-08-20
+
+### Fixed
+
+* default.xsl declares it is a 2.0 stylesheet, but it appears to have issues with a 2.0 processor ([#958](https://github.com/spotbugs/spotbugs/issues/958))
+
+## 4.0.0-beta3 - 2019-06-24
+
+### Added
+
+* Provide support for CheckerFramework `@NonNull` annotation
+* Recognize CheckerFramework type annotations on method return values ([#960](https://github.com/spotbugs/spotbugs/pull/960))
+* The feature toggle `spotbugs.experimental.multiThread` for experimental multi-thread analysis
+* Add management for source filter using full source path, if available and simple filename does not already match ([#694](https://github.com/spotbugs/spotbugs/issues/694))
+
+## 4.0.0-beta2 - 2019-05-21
+
+### Fixed
+
+* HTML report cannot be generated with `fancy-hist.xsl` ([#944](https://github.com/spotbugs/spotbugs/issues/944))
+
+### Added
+
+* Depend on XSLT 2 engine explicitly ([#944](https://github.com/spotbugs/spotbugs/issues/944))
+
+### Changed
+
+* Replace to try-with-resources
+* Reset DataAnalysis.DEBUG back when analysis reaches MAX_ITER
+* Remove unused methods in `BCELUtil`
+* Remove unused methods and deperecated methods in `edu.umd.cs.findbugs.util.Util`
+* Change to removeIf from Iterator and Iterator.remove
+* Use Map.computeIfAbsent instead of Map.get and Map.put
+* Use for-each instead of for-loop and while-loop
+* Bump up SLF4J API to `1.8.0-beta4`
+
+## 4.0.0-beta1 - 2019-03-27
+
+### Added
+
+* update ASM to 7.1 that supports Java 13
+
+### Removed
+
+* non thread-safe implementation in `OpcodeStack.Item` ([#28](https://github.com/spotbugs/spotbugs/issues/28))
+
+### Changed
+
 * Start migrating STDOUT/STDERR usage to a logging framework
+* Improvements and bug-fixes for fancy-hist.xsl
+* Bump up Apache Commons BCEL to the version 6.3.1
+
+### Deprecated
+
+* SQL files
+* JNLP files
+* `speed` attribute of `Detector` element in `findbugs.xml`
+
+### Fixed
+
+* Fixed bug priority calculation logic in FindNonShortCircuit#reportBug
+
+## 3.1.12 - 2019-02-28
+
+### Added
+
+* Make TypeQualifierResolver recognize androidx.annotation.NonNull and Nullable ([#880](https://github.com/spotbugs/spotbugs/pull/880))
+
+### Changed
+* Bump up Apache Commons BCEL to [the version 6.3](http://mail-archives.apache.org/mod_mbox/commons-user/201901.mbox/%3CCACZkXPy3VgLmD2jppzEPwOqVDJYMM2QG%2BtWQCyzfKmZrDwem6A%40mail.gmail.com%3E)
+
+### Security
+* Update dom4j to 2.1.1 to fix security vulnerability. ([#864](https://github.com/spotbugs/spotbugs/issues/864))
+
+## 3.1.11 - 2019-01-18
+
+### Fixed
+* False positive: parameter must be non-null in inner class constructor ([#772](https://github.com/spotbugs/spotbugs/issues/772))
+
+## 3.1.10 - 2018-12-19
+
+### Fixed
+* Fix bug that enhanced xml options not recognized as textui mode
+* Dataflow generates too much log ([#601](https://github.com/spotbugs/spotbugs/issues/601))
+* Delete redundant put plugin ([#720](https://github.com/spotbugs/spotbugs/pull/720))
+
+### Added
+* Add new detector IRA\_INEFFICIENT\_REPLACEALL for detecting usage of String.replaceAll where no regex is being used ([#705](https://github.com/spotbugs/spotbugs/issues/705))
+
+### Changed
+* Eclipse plugin is now signed to establish validity ([#779](https://github.com/spotbugs/spotbugs/issues/779))
+* edu.umd.cs.findbugs.util.ClassName#assertIsDotted return type is changed to void
+* edu.umd.cs.findbugs.util.ClassName#assertIsSlashed return type is changed to void
+
+### Deprecated
+* edu.umd.cs.findbugs.classfile.ClassDescriptor#toDottedClassName() is depricated and getDottedClassName() can be used instead.
 
 ## 3.1.9 - 2018-11-20
 
@@ -16,6 +168,7 @@ Currently the versioning policy of this project follows [Semantic Versioning v2.
 
 ### CHANGED
 * Allow parallel workspace builds in Eclipse with Spotbugs installed
+* Detect method parameter type annotations ([#743](https://github.com/spotbugs/spotbugs/issues/592))
 
 ## 3.1.8 - 2018-10-16
 

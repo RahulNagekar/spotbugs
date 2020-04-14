@@ -122,6 +122,10 @@ public class DetectorFactory {
 
     private final boolean defEnabled;
 
+    /**
+     * @deprecated This attribute is not used actively, and could be removed in future release
+     */
+    @Deprecated
     private final String speed;
 
     private final String reports;
@@ -320,6 +324,7 @@ public class DetectorFactory {
 
     /**
      * Get the speed of the Detector produced by this factory.
+     * @deprecated This attribute is not used actively, and could be removed in future release
      */
     @Deprecated
     public String getSpeed() {
@@ -413,8 +418,7 @@ public class DetectorFactory {
      * Get the full name of the detector. This is the name of the detector
      * class, with package qualification.
      */
-    public @Nonnull @DottedClassName
-    String getFullName() {
+    public @Nonnull @DottedClassName String getFullName() {
         return className;
     }
 

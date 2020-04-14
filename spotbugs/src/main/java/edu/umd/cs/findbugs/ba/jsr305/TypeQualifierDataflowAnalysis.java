@@ -52,11 +52,11 @@ import edu.umd.cs.findbugs.util.ClassName;
  */
 public abstract class TypeQualifierDataflowAnalysis extends AbstractDataflowAnalysis<TypeQualifierValueSet> {
 
-    static String primitiveType (String simpleClass) {
+    static String primitiveType(String simpleClass) {
         if ("Integer".equals(simpleClass)) {
             return "int";
         }
-        return  simpleClass.toLowerCase();
+        return simpleClass.toLowerCase();
     }
 
     static boolean isIdentifyFunctionForTypeQualifiers(XMethod m) {
@@ -282,11 +282,7 @@ public abstract class TypeQualifierDataflowAnalysis extends AbstractDataflowAnal
     public abstract void registerSourceSinkLocations() throws DataflowAnalysisException;
 
     protected void registerSourceSink(SourceSinkInfo sourceSinkInfo) {
-        Set<SourceSinkInfo> set = sourceSinkMap.get(sourceSinkInfo.getLocation());
-        if (set == null) {
-            set = new HashSet<>();
-            sourceSinkMap.put(sourceSinkInfo.getLocation(), set);
-        }
+        Set<SourceSinkInfo> set = sourceSinkMap.computeIfAbsent(sourceSinkInfo.getLocation(), k -> new HashSet<>());
         set.add(sourceSinkInfo);
     }
 
@@ -301,7 +297,7 @@ public abstract class TypeQualifierDataflowAnalysis extends AbstractDataflowAnal
      */
     public Set<SourceSinkInfo> getSourceSinkInfoSet(Location location) {
         Set<SourceSinkInfo> result = sourceSinkMap.get(location);
-        return result != null ? result : Collections.<SourceSinkInfo> emptySet();
+        return result != null ? result : Collections.<SourceSinkInfo>emptySet();
     }
 
     /*

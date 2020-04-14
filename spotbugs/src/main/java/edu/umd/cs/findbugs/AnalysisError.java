@@ -46,10 +46,10 @@ public class AnalysisError {
         }
         AnalysisError other = (AnalysisError) obj;
         return Objects.equals(exceptionMessage, other.exceptionMessage)
-            && Objects.equals(message, other.message)
-            && Objects.equals(nestedExceptionMessage, other.nestedExceptionMessage)
-            && Arrays.equals(nestedStackTrace, other.nestedStackTrace)
-            && Arrays.equals(stackTrace, other.stackTrace);
+                && Objects.equals(message, other.message)
+                && Objects.equals(nestedExceptionMessage, other.nestedExceptionMessage)
+                && Arrays.equals(nestedStackTrace, other.nestedStackTrace)
+                && Arrays.equals(stackTrace, other.stackTrace);
     }
 
     /**
@@ -91,7 +91,7 @@ public class AnalysisError {
         for (StackTraceElement aExceptionStackTrace : exceptionStackTrace) {
             arr.add(aExceptionStackTrace.toString());
         }
-        String[] tmp = arr.toArray(new String[arr.size()]);
+        String[] tmp = arr.toArray(new String[0]);
         return tmp;
     }
 

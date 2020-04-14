@@ -1,13 +1,9 @@
-plugins {
-  id "com.github.spotbugs" version "1.6.5"
-}
-
 apply from: "$rootDir/gradle/checkstyle.gradle"
 apply from: "$rootDir/gradle/javadoc.gradle"
 apply from: "$rootDir/gradle/maven.gradle"
 
 dependencies {
-  compile project(':spotbugs')
+  implementation project(':spotbugs')
   compileOnly 'org.apache.ant:ant:1.9.4'
 }
 
@@ -33,18 +29,12 @@ task sourcesJar(type: Jar) {
   from sourceSets.main.allSource
 }
 
-artifacts {
-  archives jar, javadocJar, sourcesJar
-}
-
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      pom.project {
-        name 'SpotBugs Ant Task'
-        description 'Ant Task to run SpotBugs'
-      }
-    }
+publishing.publications.maven {
+  artifact javadocJar
+  artifact sourcesJar
+  pom {
+    name = 'SpotBugs Ant Task'
+    description = 'Ant Task to run SpotBugs'
   }
 }
 
@@ -52,8 +42,3 @@ uploadArchives {
 // http://blog.joda.org/2017/04/java-se-9-jpms-module-naming.html
 ext.moduleName = 'com.github.spotbugs.ant'
 apply from: "$rootDir/gradle/jigsaw.gradle"
-
-spotbugs {
-  effort = "max"
-  reportLevel = "high"
-}

@@ -185,12 +185,7 @@ public class Update {
         matchBugs(baselineCollection, bugCollection);
         matchBugs(SortedBugCollection.BugInstanceComparator.instance, baselineCollection, bugCollection);
         matchBugs(versionInsensitiveBugComparator, baselineCollection, bugCollection);
-        for (Iterator<BugInstance> i = bugCollection.getCollection().iterator(); i.hasNext();) {
-            BugInstance bug = i.next();
-            if (matchedOldBugs.containsKey(bug)) {
-                i.remove();
-            }
-        }
+        bugCollection.getCollection().removeIf(matchedOldBugs::containsKey);
 
     }
 
@@ -342,7 +337,7 @@ public class Update {
         BugRanker.trimToMaxRank(newCollection, maxRank);
         if (sloppyMatch) {
             TreeSet<BugInstance> sloppyUnique = new TreeSet<>(new SloppyBugComparator());
-            for(Iterator<BugInstance> i = newCollection.iterator(); i.hasNext(); ) {
+            for (Iterator<BugInstance> i = newCollection.iterator(); i.hasNext();) {
                 if (!sloppyUnique.add(i.next())) {
                     i.remove();
                 }
@@ -572,6 +567,7 @@ public class Update {
 
     enum MatchOldBugs {
         IF_LIVE, IF_CLASS_NOT_SEEN_UNTIL_NOW, ALWAYS;
+
         boolean match(BugInstance b) {
             switch (this) {
             case ALWAYS:
@@ -603,11 +599,7 @@ public class Update {
             if (!matchedOldBugs.containsKey(bug)) {
                 if (matchOld.match(bug)) {
                     //                    oldBugs++;
-                    LinkedList<BugInstance> q = set.get(bug);
-                    if (q == null) {
-                        q = new LinkedList<>();
-                        set.put(bug, q);
-                    }
+                    LinkedList<BugInstance> q = set.computeIfAbsent(bug, k -> new LinkedList<>());
                     q.add(bug);
                 }
 

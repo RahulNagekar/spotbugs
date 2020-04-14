@@ -384,9 +384,7 @@ public class ProjectFilterSettings implements Cloneable {
      * @return the set of active categories
      */
     public Set<String> getActiveCategorySet() {
-        Set<String> result = new TreeSet<>();
-        result.addAll(this.activeBugCategorySet);
-        return result;
+        return new TreeSet<>(this.activeBugCategorySet);
     }
 
     /**
@@ -478,11 +476,11 @@ public class ProjectFilterSettings implements Cloneable {
         ProjectFilterSettings other = (ProjectFilterSettings) obj;
 
         return this.getMinPriority().equals(other.getMinPriority())
-            && this.getMinRank() == other.getMinRank()
-            // don't compare the activeBugCategorySet. compare the
-            // hiddenBugCategorySet only
-            && this.hiddenBugCategorySet.equals(other.hiddenBugCategorySet)
-            && this.displayFalseWarnings == other.displayFalseWarnings;
+                && this.getMinRank() == other.getMinRank()
+                // don't compare the activeBugCategorySet. compare the
+                // hiddenBugCategorySet only
+                && this.hiddenBugCategorySet.equals(other.hiddenBugCategorySet)
+                && this.displayFalseWarnings == other.displayFalseWarnings;
     }
 
     /*
@@ -548,4 +546,3 @@ public class ProjectFilterSettings implements Cloneable {
         return minPriority;
     }
 }
-

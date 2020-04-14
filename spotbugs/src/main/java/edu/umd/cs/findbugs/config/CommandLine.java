@@ -26,6 +26,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -169,7 +170,7 @@ public abstract class CommandLine {
      */
 
     public String[] expandOptionFiles(String[] argv, boolean ignoreComments, boolean ignoreBlankLines) throws IOException,
-    HelpRequestedException {
+            HelpRequestedException {
         // Add all expanded options at the end of the options list, before the
         // list of
         // jar/zip/class files and directories.
@@ -196,7 +197,7 @@ public abstract class CommandLine {
             resultList.add(argv[i]);
         }
 
-        return resultList.toArray(new String[resultList.size()]);
+        return resultList.toArray(new String[0]);
     }
 
     public static ArrayList<String> getAnalysisOptionProperties(boolean ignoreComments, boolean ignoreBlankLines) {
@@ -228,9 +229,7 @@ public abstract class CommandLine {
             if (line.length() >= 2 && line.charAt(0) == '"' && line.charAt(line.length() - 1) == '"') {
                 resultList.add(line.substring(0, line.length() - 1));
             } else {
-                for (String segment : line.split(" ")) {
-                    resultList.add(segment);
-                }
+                Collections.addAll(resultList, line.split(" "));
             }
         }
     }

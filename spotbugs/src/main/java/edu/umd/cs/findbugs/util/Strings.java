@@ -24,7 +24,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
+
 
 /**
  * A class for static String utility methods.
@@ -95,10 +96,10 @@ public class Strings {
 
     private static boolean isInvalidXMLCharacter(int c) {
         return (c < XML_ALLOWED_LOW_CHARACTER_BOUND && c >= 0x0
-                // low-value characters allowed by XML 1.0 spec
-                // '\uFFFE' (&#65534;) cannot be deserialized by SAX reader.
+        // low-value characters allowed by XML 1.0 spec
+        // '\uFFFE' (&#65534;) cannot be deserialized by SAX reader.
                 && c != 0x9 && c != 0xA && c != 0xD)
-            || c == 0xFFFE;
+                || c == 0xFFFE;
     }
 
     private static volatile boolean xmlLowValueEscapeStringsInitialized = false;
@@ -183,7 +184,7 @@ public class Strings {
             sb.append(sChars, lastReplacement, sChars.length - lastReplacement);
         }
 
-        return StringEscapeUtils.escapeXml(sb.toString());
+        return StringEscapeUtils.escapeXml11(sb.toString());
     }
 
     private static final String unicodeUnescapeMatchExpression = "(\\\\*)(\\\\u)(\\p{XDigit}{4})";

@@ -185,6 +185,8 @@ public class Dataflow<Fact, AnalysisType extends DataflowAnalysis<Fact>> {
             }
 
             if (numIterations >= MAX_ITERS + 9) {
+                DEBUG = debugWas;
+
                 throw new DataflowAnalysisException("Too many iterations (" + numIterations + ") in dataflow when analyzing "
                         + getFullyQualifiedMethodName());
             }
@@ -433,7 +435,7 @@ public class Dataflow<Fact, AnalysisType extends DataflowAnalysis<Fact>> {
             MethodGen mg = cfg.getMethodGen();
             System.out.println(mg.getClassName() + "." + mg.getName() + mg.getSignature());
             new RuntimeException("Quiescence achieved----------------------------------------------------------------")
-            .printStackTrace(System.out);
+                    .printStackTrace(System.out);
 
         }
         DEBUG = debugWas;
